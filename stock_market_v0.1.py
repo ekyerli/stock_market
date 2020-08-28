@@ -1,9 +1,6 @@
-import numpy as np
-import pandas as pd
-import matplotlib.pyplot as plt
+#We determine our buy and sell points
 import investpy
 from pylab import *
-import datetime as dt
 
 def buy_sell(signal):
     buy=[]
@@ -29,15 +26,15 @@ def buy_sell(signal):
             sell.append(np.nan)       
     return(buy,sell)
 
-hisse="BIMAS" #BURAYA HİSSEYİ YAZIN
-endeks="BIST 100" #BURAYA ENDEKSİ YAZIM
-dateilk="01/01/2019"
-dateson="26/08/2020"
+hisse="GEREL" # Write share
+endeks="BIST 100"
+dateilk="01/01/2019" #datefirst
+dateson="26/08/2020" #datelast
 df2 = investpy.get_index_historical_data(index=endeks, country="Turkey", from_date=dateilk, to_date=dateson)
 df = investpy.get_stock_historical_data(stock=hisse, country="Turkey", from_date=dateilk, to_date=dateson)
 #df2 = investpy.get_stock_historical_data(stock=hisse, country="Turkey", from_date=dateilk, to_date=dateson)
-shortEMA = df.Close.ewm(span=7,adjust=False).mean()
-longEMA = df.Close.ewm(span=35,adjust=False).mean()
+shortEMA = df.Close.ewm(span=30,adjust=False).mean()
+longEMA = df.Close.ewm(span=48,adjust=False).mean()
 MACD=shortEMA-longEMA
 sinyal=MACD.ewm(span=10,adjust=False).mean()
 df["MACD"]=MACD
